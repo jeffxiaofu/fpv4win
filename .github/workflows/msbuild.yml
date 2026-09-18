@@ -66,7 +66,7 @@ jobs:
           .\vcpkg integrate install
           .\vcpkg install libusb libpcap libsodium ffmpeg qt5 sdl2 vcpkg-tool-ninja
           cd ..
-          cmake "-DCMAKE_TOOLCHAIN_FILE=$WS/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_MODULE_PATH=$WS/vcpkg/installed/x64-windows/share/ffmpeg" -S ./ -B build
+          cmake "-DCMAKE_TOOLCHAIN_FILE=$WS/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DFFMPEG_DIR=$WS/vcpkg/installed/x64-windows" "-DCMAKE_MODULE_PATH=$WS/vcpkg/installed/x64-windows/share/ffmpeg" -S ./ -B build
           cmake --build build --config Release --target fpv4win
           cp gs.key build/Release/
           Invoke-WebRequest -Uri https://github.com/pbatard/libwdi/releases/download/v1.5.0/zadig-2.8.exe -OutFile build/Release/zadig-2.8.exe
