@@ -32,6 +32,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-vcpkg-
 
+      - name: Install pkg-config
+        run: choco install -y --stoponfirstfailure pkgconfiglite
+
       - name: Build
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
