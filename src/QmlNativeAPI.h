@@ -120,7 +120,7 @@ public:
     qulonglong wifiFrameCount() { return wifiFrameCount_; }
     Q_INVOKABLE int GetPlayerPort() { return playerPort; }
     Q_INVOKABLE QString GetPlayerCodec() const { return playerCodec; }
-    int GetFreePort() { return 5600; }
+    int GetFreePort() { return 5600; } 
     qulonglong wfbFrameCount_ = 0;
     qulonglong wifiFrameCount_ = 0;
     qulonglong rtpPktCount_ = 0;
