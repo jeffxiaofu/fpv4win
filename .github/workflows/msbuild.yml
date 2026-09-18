@@ -35,6 +35,20 @@ jobs:
       - name: Install pkg-config
         run: choco install -y --stoponfirstfailure pkgconfiglite
 
+      - name: Fix FFMPEG CMake config
+        shell: pwsh
+        run: |
+          $vcpkgRoot = "${{ github.workspace }}/vcpkg/installed/x64-windows"
+          $srcFile = Get-ChildItem -Path $vcpkgRoot -Recurse -Filter "FindFFMPEG.cmake" -ErrorAction SilentlyContinue | Select-Object -First 1
+          if ($srcFile) {
+            $targetDir = "$vcpkgRoot/share/ffmpeg"
+            New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
+            Copy-Item $srcFile.FullName "$targetDir/FindFFMPEG.cmake" -Force
+            Write-Host "Copied FindFFMPEG.cmake to $targetDir"
+          } else {
+            Write-Host "FindFFMPEG.cmake not found, skipping"
+          }
+
       - name: Build
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
@@ -50,7 +64,7 @@ jobs:
           .\vcpkg integrate install
           .\vcpkg install libusb libpcap libsodium ffmpeg qt5 sdl2 vcpkg-tool-ninja
           cd ..
-          cmake "-DCMAKE_TOOLCHAIN_FILE=D:/a/fpv4win/fpv4win/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DFFMPEG_DIR=${{ github.workspace }}/vcpkg/installed/x64-windows" -S ./ -B "build"
+          cmake "-DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_MODULE_PATH=${{ github.workspace }}/vcpkg/installed/x64-windows/share/ffmpeg" -S ./ -B build
           cmake --build build --config Release --target fpv4win
           cp gs.key build/Release/
           Invoke-WebRequest -Uri https://github.com/pbatard/libwdi/releases/download/v1.5.0/zadig-2.8.exe -OutFile build/Release/zadig-2.8.exe
