@@ -10,7 +10,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(PkgConfig REQUIRED)
 
-find_package(FFmpeg REQUIRED)
+find_package(FFMPEG REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(unofficial-sodium CONFIG REQUIRED)
 pkg_check_modules(LIBUSB REQUIRED IMPORTED_TARGET libusb-1.0)
